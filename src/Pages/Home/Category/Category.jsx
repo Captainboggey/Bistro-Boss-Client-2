@@ -8,11 +8,14 @@ import s2 from '../../../assets/home/slide2.jpg'
 import s3 from '../../../assets/home/slide3.jpg'
 import s4 from '../../../assets/home/slide4.jpg'
 import s5 from '../../../assets/home/slide5.jpg'
+import SectionTitle from '../../../Components/SectionTitle/SectionTitle';
 
 
 const Category = () => {
     return (
-        <Swiper
+        <section>
+            <SectionTitle heading={"Order Online"} subHeading={"From 11.00am to 10.00pm"}></SectionTitle>
+            <Swiper
             slidesPerView={4}
             spaceBetween={30}
             centeredSlides={true}
@@ -29,6 +32,7 @@ const Category = () => {
             <SwiperSlide><img src={s5} alt="" /><h2 className='text-4xl text-gray-200 shadow-sm drop-shadow-lg text-center -mt-12 uppercase'>salads</h2></SwiperSlide>
             
         </Swiper>
+        </section>
     );
 };
 
