@@ -3,10 +3,12 @@ import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, val
 import { AuthContext } from '../../providers/AuthProvider';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import Swal from 'sweetalert2';
+
 
 const Login = () => {
     const {signIn}=useContext(AuthContext)
-    const captchaRef = useRef(null);
+   
     const [disabled,setDisabled]=useState(true);
     useEffect(()=>{
         loadCaptchaEnginge(6);
@@ -20,13 +22,30 @@ const Login = () => {
         signIn(email,password)
         .then(res=>{
             console.log(res.user)
+            Swal.fire({
+                title: "User Logged In Successfully",
+                showClass: {
+                  popup: `
+                    animate__animated
+                    animate__fadeInUp
+                    animate__faster
+                  `
+                },
+                hideClass: {
+                  popup: `
+                    animate__animated
+                    animate__fadeOutDown
+                    animate__faster
+                  `
+                }
+              });
         })
         .catch(error=>console.error(error))
 
     }
-    const handleValidateCaptcha = () =>{
+    const handleValidateCaptcha = (e) =>{
 
-        const user_captcha_value = captchaRef.current.value;
+        const user_captcha_value = e.target.value;
         if(validateCaptcha(user_captcha_value)){
               setDisabled(false)
         }else{
@@ -69,8 +88,8 @@ const Login = () => {
                             <label className="label">
                             <LoadCanvasTemplate />
                             </label>
-                            <input ref={captchaRef} type="text" name="captcha" placeholder="type the captcha" className="input input-bordered" required />
-                            <button  onClick={handleValidateCaptcha} className='btn btn-outline mt-2 w-full btn-xs'>Validate</button>
+                            <input  onBlur={handleValidateCaptcha}  type="text" name="captcha" placeholder="type the captcha" className="input input-bordered" required />
+                            <button   className='btn btn-outline mt-2 w-full btn-xs'>Validate</button>
                             
                         </div>
                         <div className="form-control  mt-6">
