@@ -2,17 +2,42 @@ import { useContext } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../providers/AuthProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 
 const SignUp = () => {
-    const { register, handleSubmit, watch, formState: { errors }, } = useForm();
-    const {createUser}= useContext(AuthContext)
+    const { register, handleSubmit, watch,reset, formState: { errors }, } = useForm();
+    const {createUser,updateUserProfile}= useContext(AuthContext)
+    const navigate = useNavigate();
     const onSubmit = (data) => {
         console.log(data)
         createUser(data.email,data.password)
         .then(res=>{
-            console.log(res.user)
+            const loggedUser = res.user;
+            console.log(loggedUser)
+            updateUserProfile(data.name,data.photoUrl)
+            .then(()=>{
+                console.log('user profile info updated')
+                reset();
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.onmouseenter = Swal.stopTimer;
+                      toast.onmouseleave = Swal.resumeTimer;
+                    }
+                  });
+                  Toast.fire({
+                    icon: "success",
+                    title: "Signed in successfully"
+                  });
+                  navigate('/')
+            })
+            .catch(error=>console.error(error))
         })
         .catch(error=>console.error(error))
     }
@@ -35,10 +60,17 @@ const SignUp = () => {
                     <form onSubmit={handleSubmit(onSubmit)} className="card-body">
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Email</span>
+                                <span className="label-text">Name</span>
                             </label>
                             <input type="text"  {...register("name", { required: true })} placeholder="name" name="name" className="input input-bordered" />
                             {errors.name && <span className="text-red-600">Name is required</span>}
+                        </div>
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">Photo Url</span>
+                            </label>
+                            <input type="text"  {...register("photoUrl", { required: true })} placeholder="photo url" name="photoUrl" className="input input-bordered" />
+                            {errors.photoUrl && <span className="text-red-600">Photo is required</span>}
                         </div>
                         <div className="form-control">
                             <label className="label">

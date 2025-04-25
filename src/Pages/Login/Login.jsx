@@ -1,14 +1,16 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
 import { AuthContext } from '../../providers/AuthProvider';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Swal from 'sweetalert2';
 
 
 const Login = () => {
     const {signIn}=useContext(AuthContext)
-   
+    const location = useLocation();
+    const navigate = useNavigate();
+    const from = location.state?.from?.pathname || "/";
     const [disabled,setDisabled]=useState(true);
     useEffect(()=>{
         loadCaptchaEnginge(6);
@@ -39,6 +41,7 @@ const Login = () => {
                   `
                 }
               });
+              navigate(from)
         })
         .catch(error=>console.error(error))
 
@@ -89,7 +92,7 @@ const Login = () => {
                             <LoadCanvasTemplate />
                             </label>
                             <input  onBlur={handleValidateCaptcha}  type="text" name="captcha" placeholder="type the captcha" className="input input-bordered" required />
-                            <button   className='btn btn-outline mt-2 w-full btn-xs'>Validate</button>
+                            
                             
                         </div>
                         <div className="form-control  mt-6">
