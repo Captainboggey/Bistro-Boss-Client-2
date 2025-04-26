@@ -3,6 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
 import axios from "axios";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useCart from "../../hooks/useCart";
 
 
 const FoodCard = ({item}) => {
@@ -11,9 +12,10 @@ const FoodCard = ({item}) => {
     const location = useLocation();
     const axiosSecure = useAxiosSecure();
     const { image, price, recipe, name,_id } = item;
-    const handleAddToCart = food =>{
+    const [,refetch]=useCart();
+    const handleAddToCart = () =>{
         if(user && user.email){
-                 console.log(user.email,food)
+                //  console.log(user.email,food)
                  const cartItem ={
                     menuId: _id,
                     email: user.email,
@@ -32,6 +34,7 @@ const FoodCard = ({item}) => {
                             showConfirmButton: false,
                             timer: 1500
                           });
+                          refetch()
                     }
                 })
 
@@ -63,7 +66,7 @@ const FoodCard = ({item}) => {
                 <h2 className="card-title mx-auto">{name}</h2>
                 <p className='text-center'>{recipe}</p>
                 <div className="card-actions justify-center">
-                <button onClick={()=>handleAddToCart(item)} className='btn btn-outline border-0 hover:bg-black hover:text-white border-yellow-700 border-b-4 text-yellow-700 mt-2 '>Add to Cart</button>
+                <button onClick={handleAddToCart} className='btn btn-outline border-0 hover:bg-black hover:text-white border-yellow-700 border-b-4 text-yellow-700 mt-2 '>Add to Cart</button>
                 </div>
             </div>
         </div>
