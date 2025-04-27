@@ -63,7 +63,7 @@ const AuthProvider = ({children}) => {
         return ()=>{
             return unSubscribe();
         }
-    },[])
+    },[axiosPublic])
 
     const authInfo ={user,loading,createUser,signIn,logOut,updateUserProfile,googleSignIn}
     return (

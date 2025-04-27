@@ -5,10 +5,11 @@ import { NavLink, Outlet } from 'react-router-dom';
 import useCart from '../hooks/useCart';
 import { MdEmail } from 'react-icons/md';
 import { FaSpoon } from 'react-icons/fa6';
+import useAdmin from '../hooks/useAdmin';
 
 const DashBoard = () => {
     const [cart] = useCart()
-    const isAdmin = true
+    const [isAdmin] = useAdmin()
     return (
         <div className='flex'>
             <div className="w-64 min-h-screen bg-orange-400">
