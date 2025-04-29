@@ -36,8 +36,8 @@ const UpdateItem = () => {
                 }
                 const menuRes = await axiosSecure.patch(`/menu/${_id}`,menuItem)
                 console.log(menuRes.data)
-                if(menuRes.data.insertedId){
-                    reset()
+                if(menuRes.data.modifiedCount>0){
+                    // reset()
                     const Toast = Swal.mixin({
                         toast: true,
                         position: "top-end",
