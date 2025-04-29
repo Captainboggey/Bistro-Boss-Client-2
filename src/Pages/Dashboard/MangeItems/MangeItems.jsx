@@ -5,6 +5,7 @@ import { FaEdit, FaTrash, FaUser } from 'react-icons/fa';
 import { FaUpLong } from 'react-icons/fa6';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import { Link } from 'react-router-dom';
 
 const MangeItems = () => {
     const [menu,loading,refetch] = useMenu()
@@ -87,9 +88,9 @@ const MangeItems = () => {
                                     <td className='text-right'>
                                         ${item.price}
                                     </td>
-                                    <td>
+                                    <Link to={`/dashboard/updateItem/${item._id}`}><td>
                                         <button  className="btn btn-ghost btn-lg"><FaEdit className='text-red-600'></FaEdit></button>
-                                    </td>
+                                    </td></Link>
                                     <td>
                                         <button onClick={()=>handleDeleteItem(item)} className="btn btn-ghost btn-lg"><FaTrash className='text-red-600'></FaTrash></button>
                                     </td>
