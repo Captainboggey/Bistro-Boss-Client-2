@@ -32,6 +32,9 @@ const Navbar = () => {
                     <button onClick={handleLogout} className='btn btn-ghost btn-sm'>Logout</button></> :
                 <li><Link to={'/login'}>Login</Link></li>
         }
+        {
+            user? <button>{user.displayName}</button>: ' '
+        }
     </>
     return (
         <div className="navbar bg-black max-w-screen-xl mx-auto text-white bg-opacity-30 pb-2 fixed z-10">
