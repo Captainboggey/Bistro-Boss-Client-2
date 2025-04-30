@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import useCart from '../../../hooks/useCart';
 import useAuth from '../../../hooks/useAuth';
+import Swal from 'sweetalert2';
 
 const CheckoutForm = () => {
     const [error,setError]=useState()
@@ -12,16 +13,18 @@ const CheckoutForm = () => {
     const stripe = useStripe();
     const elements = useElements();
     const axiosSecure = useAxiosSecure();
-    const [cart]=useCart();
+    const [cart,refetch]=useCart();
     const totalPrice = cart.reduce((total,item)=> total+ item.price,0)
 
-    useEffect(()=>{
-        axiosSecure.post('/create-payment-intent',{price: totalPrice})
-        .then(res=>{
-            console.log(res.data.clientSecret)
-            setClientSecret(res.data.clientSecret)
-        })
-    },[axiosSecure,totalPrice])
+    
+        useEffect(()=>{
+            axiosSecure.post('/create-payment-intent',{price: totalPrice})
+            .then(res=>{
+                console.log(res.data.clientSecret)
+                setClientSecret(res.data.clientSecret)
+            })
+        },[axiosSecure,totalPrice])
+   
 
 
     const handleSubmit = async (event) => {
@@ -75,6 +78,25 @@ const CheckoutForm = () => {
                 }
                const res = await axiosSecure.post('/payments',payment)
                console.log('payment saved',res)
+               
+               if(res.data?.paymentResult?.insertedId){
+                refetch()
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.onmouseenter = Swal.stopTimer;
+                      toast.onmouseleave = Swal.resumeTimer;
+                    }
+                  });
+                  Toast.fire({
+                    icon: "success",
+                    title: "Payment Successful"
+                  });
+               }
             }
         }
     }

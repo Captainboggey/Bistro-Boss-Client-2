@@ -57,7 +57,7 @@ const DashBoard = () => {
                                 </li>
                                 <li>
 
-                                    <NavLink className='hover:bg-purple-500 selection:bg-purple-600' to={'/dashboard/bookings'}><FaList></FaList> User Home</NavLink>
+                                    <NavLink className='hover:bg-purple-500 selection:bg-purple-600' to={'/dashboard/paymentHistory'}><FaList></FaList> Payment History</NavLink>
                                 </li>
                             </>
                     }
