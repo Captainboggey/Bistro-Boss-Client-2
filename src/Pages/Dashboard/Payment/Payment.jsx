@@ -1,5 +1,9 @@
 import React from 'react';
 import SectionTitle from '../../../Components/SectionTitle/SectionTitle';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+
+const stripePromise = loadStripe('')
 
 const Payment = () => {
     return (
@@ -7,7 +11,9 @@ const Payment = () => {
             <SectionTitle heading={"payment"} subHeading={'Please Pay To Eat'}></SectionTitle>
 
             <div>
-                <h2>Payment Page</h2>
+                <Elements stripe={stripePromise}>
+                    
+                </Elements>
             </div>
             
         </div>
